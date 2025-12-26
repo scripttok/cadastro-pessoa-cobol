@@ -26,10 +26,13 @@
                10 WS-CEP PIC 9(8).
                10 WS-NUMERO PIC 9(8).
        01 WS-OPCAO PIC 9(3).
+       01 WS-EDITAR PIC 9(3).
        01 WS-CONTINUAR PIC X.
        01 WS-VALIDO PIC 9.
            88 WS-VALIDACAO-OK VALUE 1.
            88 WS-VALIDACAO-ERRO VALUE 0.
+       01 WS-EDIT PIC X(30).
+       01 WS-MENU-EDCAO PIC X(30).
        
        PROCEDURE DIVISION.
        PRINCIPAL.
@@ -43,6 +46,7 @@
                DISPLAY '================================'
                DISPLAY '1 - Novo Cliente'
                DISPLAY '2 - Consultar Cliente'
+               DISPLAY '3 - Editar Cliente'
                DISPLAY '9 - Sair'
                DISPLAY 'Escolha uma opção: ' WITH NO ADVANCING
                ACCEPT WS-OPCAO
@@ -54,6 +58,8 @@
                        PERFORM CADASTRAR-CLIENTE
                    WHEN 2
                        PERFORM CONSULTAR-CLIENTE
+                    WHEN 3
+                       PERFORM EDITAR-CLIENTE
                    WHEN 9
                        DISPLAY 'Encerrando sistema...'
                    WHEN OTHER
@@ -62,9 +68,9 @@
            END-PERFORM.
     
        CADASTRAR-CLIENTE.
-           DISPLAY '================================'
-           DISPLAY 'Cadastrar'.
-           DISPLAY '================================'
+           DISPLAY '=================='
+           DISPLAY 'Cadastrar-Cliente'.
+           DISPLAY '=================='
            DISPLAY 'Me diga seu Nome : ' WITH NO ADVANCING.
            ACCEPT WS-NOME.
            DISPLAY 'Me diga seu Cpf : 'WITH NO ADVANCING.
@@ -76,8 +82,40 @@
            DISPLAY 'Cadastro realizado'.
            PERFORM MENU-PRINCIPAL.
 
+       EDITAR-CLIENTE.
+           DISPLAY "================"
+           DISPLAY "Editar -Cliente"
+           DISPLAY "================"
+           DISPLAY "Qual campo deseja editar ?"
+           DISPLAY"NOME :" WS-NOME.
+           DISPLAY"CPF :" WS-CPF.
+           DISPLAY"ENDERECO :" WS-ENDERECO.
+           ACCEPT WS-EDIT.
+
+               EVALUATE WS-EDIT
+                   WHEN "nome "
+                       DISPLAY "Digite seu nome : " WITH NO ADVANCING
+                       ACCEPT WS-NOME
+                       DISPLAY"NOME : > " WS-NOME                       
+                   WHEN "cpf"
+                       DISPLAY "Digite seu CPF : " WITH NO ADVANCING
+                       ACCEPT WS-CPF
+                       DISPLAY"cpf : > " WS-CPF                       
+                   WHEN "endereco"
+                       DISPLAY "Digite seu ENDERECO : "
+                       WITH NO ADVANCING
+                       ACCEPT WS-ENDERECO
+                       DISPLAY"ENDERECO : > " WS-ENDERECO
+                       
+                   WHEN OTHER
+                           DISPLAY 'Opção inválida!'
+               END-EVALUATE.
+
        CONSULTAR-CLIENTE.
-           DISPLAY 'Consultar' WITH NO ADVANCING.
+           DISPLAY "=================="
+           DISPLAY 'Consultar-Cliente'.
+           DISPLAY "=================="
+
            PERFORM EXIBIR-CLIENTE.
 
        EXIBIR-CLIENTE.
